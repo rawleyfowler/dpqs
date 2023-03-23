@@ -4,6 +4,23 @@ but [proven](https://codeblab.com/wp-content/uploads/2009/09/DualPivotQuicksort.
 actually be faster than traditional quicksort on larger arrays, `n > 286`, so this implementation takes advantage
 of this by using Insertion Sort, Quick Sort, and Dual Pivot Quick Sort to produce a very fast sorting numeric interface. This is the current sorting method used on the Java Virtual Machine (JVM) for sorting large arrays of primitive values (int, float, double, etc).
 
+## How to use
+```c
+#include <dpqs.h>
+
+int main(void) {
+  int foo[2000];
+  
+  for (int i = 0; i < 2000; i++) {
+    foo[i] = i + 39;
+  }
+  
+  dpqs_sort(foo, 0, 1999);
+  
+  // Foo is sorted :)
+}
+```
+
 ## How The Algorithm Works
 - Take in the array and bounds Lo and Hi
 - For A with less than 27 elements, use Insertion sort
