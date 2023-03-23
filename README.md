@@ -2,7 +2,7 @@
 A version of quicksort originally deemed slower than traditional quicksort,
 but [proven](https://codeblab.com/wp-content/uploads/2009/09/DualPivotQuicksort.pdf) by Vladimir Yaroslavskiy to
 actually be faster than traditional quicksort on larger arrays, `n > 286`, so this implementation takes advantage
-of this by using Insertion Sort, Quick Sort, and Dual Pivot Quick Sort to produce a very fast sorting numeric interface. This is the current sorting method used on the Java Virtual Machine (JVM) for sorting large arrays of primitive values (int, float, double, etc).
+of this by using Insertion Sort, Quick Sort, and Dual Pivot Quick Sort to produce a very fast numeric sorting interface. This is the current sorting method used on the Java Virtual Machine (JVM) for sorting large arrays of primitive values (int, float, double, etc).
 
 ## How to use
 ```c
