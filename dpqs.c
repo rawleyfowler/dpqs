@@ -56,14 +56,15 @@ u_int64_t dpqs_qs_partition(int64_t array[], u_int64_t lo, u_int64_t hi) {
  * Insertion sort without a sentinel (fast enough)
  */
 void dpqs_insertion_sort(int64_t array[], u_int64_t lo, u_int64_t hi) {
-  for (u_int64_t i = lo, j = i; i < hi; j = i++) {
-    int64_t e = array[i + 1];
-    while (e < array[j]) {
-      array[j + 1] = array[j];
-      if (j-- == lo)
-        break;
+  for (u_int64_t i = lo + 1; i <= hi; i++) {
+    int k = array[i];
+    u_int64_t j = i;
+    while ((j > lo) && (k < array[j - 1])) {
+      array[j] = array[j - 1];
+      j--;
     }
-    array[j + 1] = e;
+
+    array[j] = k;
   }
 }
 
