@@ -19,12 +19,14 @@
   OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include "dpqs.h"
+#include <math.h>
 #include <stdint.h>
 #include <sys/types.h>
 
-void swap(int64_t a[], u_int64_t i, u_int64_t j) {
-  int64_t tmp = a[i];
+#include "dpqs.h"
+
+void swap(dbl_t a[], u_int64_t i, u_int64_t j) {
+  dbl_t tmp = a[i];
   a[i] = a[j];
   a[j] = tmp;
 }
@@ -32,10 +34,10 @@ void swap(int64_t a[], u_int64_t i, u_int64_t j) {
 /**
  * Using Hoare's partition scheme
  */
-u_int64_t dpqs_qs_partition(int64_t array[], u_int64_t lo, u_int64_t hi) {
-  int64_t p = array[(int64_t)((hi - lo) >> 1) + lo];
+u_int64_t dpqs_qs_partition(dbl_t array[], u_int64_t lo, u_int64_t hi) {
+  dbl_t p = array[(u_int64_t) ((hi - lo) >> 1) + lo];
 
-  u_int64_t i, j;
+  uint_fast64_t i, j;
   for (i = lo, j = hi;; i++, j--) {
     while (array[i] < p)
       i++;
@@ -55,10 +57,10 @@ u_int64_t dpqs_qs_partition(int64_t array[], u_int64_t lo, u_int64_t hi) {
 /**
  * Insertion sort without a sentinel (fast enough)
  */
-void dpqs_insertion_sort(int64_t array[], u_int64_t lo, u_int64_t hi) {
-  for (u_int64_t i = lo + 1; i <= hi; i++) {
-    int k = array[i];
-    u_int64_t j = i;
+void dpqs_insertion_sort(dbl_t array[], u_int64_t lo, u_int64_t hi) {
+  for (uint_fast64_t i = lo + 1; i <= hi; i++) {
+    dbl_t k = array[i];
+    uint_fast64_t j = i;
     while ((j > lo) && (k < array[j - 1])) {
       array[j] = array[j - 1];
       j--;
@@ -71,11 +73,11 @@ void dpqs_insertion_sort(int64_t array[], u_int64_t lo, u_int64_t hi) {
 /**
  * Double pivot quicksort
  */
-void dpqs_partition(int64_t array[], u_int64_t lo, u_int64_t hi) {
+void dpqs_partition(dbl_t array[], u_int64_t lo, u_int64_t hi) {
   if (hi <= lo)
     return;
   
-  u_int64_t len = hi - lo;
+  uint_fast64_t len = hi - lo;
   
   if (len < INSERTION_THRESH) {
     dpqs_insertion_sort(array, lo, hi);
@@ -85,9 +87,9 @@ void dpqs_partition(int64_t array[], u_int64_t lo, u_int64_t hi) {
   if (array[lo] >= array[hi])
     swap(array, lo, hi);
 
-  int64_t p = array[lo], q = array[hi];
-  u_int64_t l = lo + 1, g = hi - 1;
-  for (u_int64_t k = lo + 1; k <= g;) {
+  dbl_t p = array[lo], q = array[hi];
+  uint_fast64_t l = lo + 1, g = hi - 1;
+  for (uint_fast64_t k = lo + 1; k <= g;) {
     if (array[k] < p)
       swap(array, l++, k++);
     else if (array[k] > q)
@@ -106,13 +108,13 @@ void dpqs_partition(int64_t array[], u_int64_t lo, u_int64_t hi) {
   dpqs_partition(array, g + 1, hi);
 }
 
-void dpqs_sort(int64_t array[], u_int64_t lo, u_int64_t hi) {
+void dpqs_sort(dbl_t array[], u_int64_t lo, u_int64_t hi) {
   if (lo >= hi || hi < 0 || lo < 0 || hi - lo < 2) {
     return;
   }
 
-  u_int64_t p;
-  u_int64_t elems = (hi - lo) - 1;
+  uint_fast64_t p;
+  uint_fast64_t elems = (hi - lo) - 1;
   if (elems < INSERTION_THRESH) {
     dpqs_insertion_sort(array, lo, hi);
     return;
