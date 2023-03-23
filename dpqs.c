@@ -81,29 +81,28 @@ void dpqs_partition(int64_t array[], u_int64_t lo, u_int64_t hi) {
     return;
   }
 
-  if (array[lo] > array[hi])
+  if (array[lo] >= array[hi])
     swap(array, lo, hi);
 
   int64_t p = array[lo], q = array[hi];
-
-  u_int64_t lt = lo + 1, gt = hi - 1;
-  u_int64_t l = lo + 1;
-  while (l <= gt) {
-    if (array[l] > array[lo])
-      swap(array, lt++, l++);
-    else if (array[hi] < array[l])
-      swap(array, l, gt--);
+  u_int64_t l = lo + 1, g = hi - 1;
+  for (u_int64_t k = lo + 1; k <= g;) {
+    if (array[k] < p)
+      swap(array, l++, k++);
+    else if (array[k] > q)
+      swap(array, k, g--);
     else
-      l++;
+      k++;
   }
 
-  swap(array, lo, --lt);
-  swap(array, hi, ++gt);
+  /* Swap P and Q */
+  swap(array, lo, --l);
+  swap(array, hi, ++g);
 
-  dpqs_partition(array, lo, lt - 1);
-  if (array[lt] < array[gt])
-    dpqs_partition(array, lt + 1, gt - 1);
-  dpqs_partition(array, gt + 1, hi);
+  dpqs_partition(array, lo, l);
+  if (array[l] < array[g])
+    dpqs_partition(array, l + 1, g);
+  dpqs_partition(array, g + 1, hi);
 }
 
 void dpqs_sort(int64_t array[], u_int64_t lo, u_int64_t hi) {
@@ -125,21 +124,4 @@ void dpqs_sort(int64_t array[], u_int64_t lo, u_int64_t hi) {
 
   dpqs_sort(array, lo, p);
   dpqs_sort(array, p + 1, hi);
-}
-
-int main() {
-  int64_t i[9999];
-
-  for (size_t j = 0; j < 9999; j++) {
-    i[j] = (int64_t)rand() / 1000000;
-  }
-
-  dpqs_sort(i, 0, 9998);
-
-  for (size_t j = 0; j < 9999; j++) {
-    printf("%ld ", i[j]);
-
-    if (j % 10 == 0 && j > 0)
-      printf("\n");
-  }
 }
